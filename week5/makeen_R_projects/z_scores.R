@@ -1,0 +1,8 @@
+A = c(44,39,22,50,64)
+B = c(22,20,18,30,11)
+mean(A)
+mean(B)
+sd(A)
+sd(B)
+(z_score_A= (A - mean(A))/sd(A))
+(z_score_B= (B - mean(B))/sd(B))
