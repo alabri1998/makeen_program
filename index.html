@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT Integration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        #chat-container {
+            width: 50%;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #chat-response {
+            margin-top: 20px;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            min-height: 100px;
+        }
+        #user-input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div id="chat-container">
+    <h2>Ask ChatGPT</h2>
+    <input type="text" id="user-input" placeholder="Type your question here...">
+    <button onclick="sendMessage()">Send</button>
+    <div id="chat-response"></div>
+</div>
+
+<script>
+    async function sendMessage() {
+        const userInput = document.getElementById('user-input').value;
+        if (!userInput) {
+            alert('Please enter a question.');
+            return;
+        }
+
+        const responseElement = document.getElementById('chat-response');
+        responseElement.innerText = 'Waiting for response...';
+
+        try {
+            const response = await fetch('http://localhost:3000/chatgpt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ prompt: userInput })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                responseElement.innerText = data.response;
+            } else {
+                responseElement.innerText = 'Error: ' + data.error;
+            }
+        } catch (error) {
+            responseElement.innerText = 'Error connecting to server: ' + error.message;
+        }
+    }
+</script>
+</body>
+</html>
